@@ -18,7 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+uint16_t st =1 ;
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -59,9 +59,40 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_PIN)
 	if(GPIO_PIN == GPIO_PIN_0)
 	{
 		HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_12);
+
+		 if (st == 1)
+		        {
+		            if (dt <= htim4.Init.Period - 100)
+		            {
+		                dt += 100;
+		            }
+		            else
+		            {
+		                dt = htim4.Init.Period;
+		                st = 0;
+		            }
+		        }
+
+		        else
+		        {
+		            if (dt >= 100)
+		            {
+		                dt -= 100;
+		            }
+		            else
+		            {
+		                dt = 0;
+		                st = 1;
+		            }
+		        }
+
+
+		        __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, dt);
+		    }
 	}
 
 }
+
 /* USER CODE END 0 */
 
 /**
